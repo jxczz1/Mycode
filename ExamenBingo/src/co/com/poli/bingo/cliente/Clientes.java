@@ -21,49 +21,64 @@ public class Clientes  {
                 for(int j = 0; j < 5; j++){
                     int numero = 0;
                     if(j == 0){
-                        numero = verificarNumeroNoRepetido(1, 16);
+                        numero = insertarDatosBingo(1, 16);
                     }
 
                     if(j == 1){
-                        numero=verificarNumeroNoRepetido(16, 31);
+                        numero=insertarDatosBingo(16, 31);
                     }
 
                     if(j == 2){
-                        numero = verificarNumeroNoRepetido(31, 46);
+                        numero = insertarDatosBingo(31, 46);
                     }
 
                     if(j == 3){
-                        numero = verificarNumeroNoRepetido(46, 61);
+                        numero = insertarDatosBingo(46, 61);
                     }
 
                     if(j == 4){
-                        numero = verificarNumeroNoRepetido(61, 76);
+                        numero = insertarDatosBingo(61, 76);
                     }
 
                     bingo[i][j] = numero;
                 }
             }
         }
-     
-         
-    public static int verificarNumeroNoRepetido(int rangoMinimo, int rangoMaximo){
-        int numero = aleatorioRango(rangoMinimo, rangoMaximo);
         
-        /*
-        boolean repetido = false;
-        
-        for(int i = 0; i < 5; i++){
+          public static  boolean verificarNumNoRepetido(int num){
+      
+          boolean result = false ;
+      
+          for(int i = 0; i < 5; i++){
             for(int j = 0; j < 5; j++){
-               if(numero==bingo[i][j]){
-                repetido=true;
-                numero = aleatorioRango(rangoMinimo, rangoMaximo); 
-               }
-               else{
-               
-               }
+                if(num!=bingo[i][j]){
+                    result=true;
+                
+                  }else{
+                        result =false;
+                        j=5;
+                        i=5;
+                       }
             }
-        }*/
-        return numero;
+        }
+    
+       return result;
+    }
+        
+     
+        
+        
+         
+    public static int insertarDatosBingo(int rangoMinimo, int rangoMaximo){
+           boolean condicion=false;
+            int numero = 0;
+            
+            while(condicion==false){                       
+                             numero = aleatorioRango(rangoMinimo, rangoMaximo);
+                             condicion = verificarNumNoRepetido( numero);
+                            }         
+         
+            return numero;
     }
     
     public static int aleatorioRango(int rangoMinimo, int rangoMaximo){
