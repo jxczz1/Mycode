@@ -1,17 +1,13 @@
 
 package co.com.poli.bingo.cliente;
 
-import static co.com.poli.bingo.server.Server.verificarNumeroNoRepetido;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

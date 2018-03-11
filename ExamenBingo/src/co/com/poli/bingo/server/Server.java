@@ -113,7 +113,7 @@ public class Server {
         Scanner teclado = new Scanner(System.in);
         
         llenarBingo();
-        
+        System.out.println("El bingo se ha inicializado.....");
         try {
             conexion = new DatagramSocket(PUERTO);
             while(true){
@@ -125,13 +125,16 @@ public class Server {
                 mensaje = new String(entrada.getData(),
                                       0, dataEntrada.length);
                 String[] msg = mensaje.split("-");
+                         //se capturan datos y se captura lo necesario
                 
                 
-                int r = Integer.valueOf(msg[0]);
-                int f = Integer.valueOf(msg[1]);
-                int c = Integer.valueOf(msg[2]);
-                
-                bingoCliente[c][f] = r;
+                int r = Integer.parseInt(msg[0]);
+                int f = Integer.parseInt(msg[1]);
+                int col = Integer.parseInt(msg[2].trim());
+                // int c = Integer.parseInt(msg[2]);//aqui empieza el error 
+                System.out.println(r+f+col);
+                System.out.println("Stop");
+                bingoCliente[f][col] = r;// Lanza exepcion con los datos
                 mostrarBingoCliente();
                 
                 
