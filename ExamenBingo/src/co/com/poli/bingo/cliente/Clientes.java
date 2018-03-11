@@ -82,31 +82,51 @@ public class Clientes  {
         byte[] dataEntrada;
         byte[] dataSalida;
         String mensaje;
+        int band= 1;
         
         try {
             InetAddress IP = InetAddress.getLocalHost();
             conexion = new DatagramSocket();
             llenarBingo();
             
+            
             while(true){
+                
+             if (band==1){
                 for(int i = 0; i < 5; i++){
                     for(int j = 0; j < 5; j++){
                         String msg = (String.valueOf(bingo[i][j])).concat("-"+i).concat("-"+j);
                         dataSalida = msg.getBytes();
                         salida = new DatagramPacket(dataSalida, 
                             dataSalida.length, IP, PUERTO);
+                        System.out.println("\n envio al servidor..");
                         conexion.send(salida);
+                        
+                        dataEntrada = new byte[1028];
+                        entrada = new DatagramPacket(dataEntrada, 
+                                             dataEntrada.length);
+                         conexion.receive(entrada);
+                         mensaje =  new String(entrada.getData(), 
+                                       0, dataEntrada.length);
+                
+                       System.out.println("Server >> "+mensaje);
+                    
+                         
                     }
                   }
-                
-                
-                dataEntrada = new byte[1028];
-                entrada = new DatagramPacket(dataEntrada, 
+                 band=0;
+                 }//end if
+                 else{
+                        dataEntrada = new byte[1028];
+                        entrada = new DatagramPacket(dataEntrada, 
                                              dataEntrada.length);
-                conexion.receive(entrada);
-                mensaje =  new String(entrada.getData(), 
+                         conexion.receive(entrada);
+                         mensaje =  new String(entrada.getData(), 
                                        0, dataEntrada.length);
-                System.out.println("Server >> "+mensaje);
+                
+                       System.out.println("Server >> "+mensaje);
+             
+                     }
                         
             }
             

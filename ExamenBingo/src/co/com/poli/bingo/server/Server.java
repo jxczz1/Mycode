@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +12,7 @@ public class Server {
     
     
     private static final int PUERTO = 12345;
-    private static int[][] bingo = new int[5][5];
+    private static int[][] bingo = new int[5][5]; // no es final porque se debe modificar aplica para bingocliente tambien
     private static int[][] bingoCliente = new int[5][5];
     
     public static void mostrarBingo(){
@@ -110,7 +109,7 @@ public class Server {
         byte[] dataEntrada;
         byte[] dataSalida;
         String mensaje;
-        Scanner teclado = new Scanner(System.in);
+   
         
         llenarBingo();
         System.out.println("El bingo se ha inicializado.....");
@@ -124,26 +123,43 @@ public class Server {
                 conexion.receive(entrada);
                 mensaje = new String(entrada.getData(),
                                       0, dataEntrada.length);
-                String[] msg = mensaje.split("-");
-                         //se capturan datos y se captura lo necesario
+                String[] msg = mensaje.split("-");//se capturan datos y se captura lo necesario
                 
                 
                 int r = Integer.parseInt(msg[0]);
                 int f = Integer.parseInt(msg[1]);
-                int col = Integer.parseInt(msg[2].trim());
-                // int c = Integer.parseInt(msg[2]);//aqui empieza el error 
-                System.out.println(r+f+col);
-                System.out.println("Stop");
-                bingoCliente[f][col] = r;// Lanza exepcion con los datos
-                mostrarBingoCliente();
+                int col = Integer.parseInt(msg[2].trim());// bug llega el ultimo con espacio ,se le aplica trim
+                // int c = Integer.parseInt(msg[2]);//de esta forma tira error ya que tiene un espacio y  lanza exepcion
+                
+                bingoCliente[f][col] = r; // se llena el vector para compararlo con el del server
+                System.out.println("\n\n Bingo cliente \n");
+                mostrarBingoCliente();//bingo del cliente
                 
                 
-                dataSalida = teclado.nextLine().getBytes();
-                salida = new DatagramPacket(dataSalida, 
+              
+                if( (f + col) == 10){
+                   
+                                     mensaje= "Comparando resultados....";
+                                     dataSalida = mensaje.getBytes();
+                                     System.out.println("Stop to see results");
+                                     salida = new DatagramPacket(dataSalida, 
+                                     dataSalida.length, 
+                                     entrada.getAddress(), 
+                                     entrada.getPort());
+                
+                
+                                   }
+                                   else{   
+                                            mensaje= "Comparando resultados....";
+                                            dataSalida = mensaje.getBytes();
+                                            salida = new DatagramPacket(dataSalida, 
                                             dataSalida.length, 
                                             entrada.getAddress(), 
                                             entrada.getPort());
-                conexion.send(salida);
+                    
+                                          conexion.send(salida);
+                                        }
+                
 
             }
             
