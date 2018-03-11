@@ -114,7 +114,7 @@ public class Clientes  {
                         dataSalida = msg.getBytes();
                         salida = new DatagramPacket(dataSalida, 
                             dataSalida.length, IP, PUERTO);
-                        System.out.println("\n envio al servidor..");
+                        System.out.println("\nCliente>> envio al servidor...");
                         conexion.send(salida);
                         
                         dataEntrada = new byte[1028];

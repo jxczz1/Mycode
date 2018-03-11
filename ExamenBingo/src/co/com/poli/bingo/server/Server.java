@@ -34,13 +34,43 @@ public class Server {
     }
     
     
-    public static boolean compararCodigo(){
+    public static boolean compararBingos(){
+        
         boolean esIgual = false;
+        int iguales;
+        
         for(int i = 0; i < 5; i++){
+             iguales=0;
             for(int j = 0; j < 5; j++){
-                //if(bingo)
+                
+                if(bingo[i][j]==bingoCliente[i][j]){
+                                                    iguales++; 
+                                                     if(iguales==3){
+                                                                     esIgual=true;
+                                                                     i=5;
+                                                                     j=5;
+                                                                   }
+                                                   }
             }
         }
+        
+         for(int i = 0; i < 5; i++){
+             iguales=0;
+            for(int j = 0; j < 5; j++){
+                
+                if(bingo[j][i]==bingoCliente[j][i]){
+                                                    iguales++; 
+                                                     if(iguales==3){
+                                                                     esIgual=true;
+                                                                     i=5;
+                                                                     j=5;
+                                                                   }
+                                                   }
+            }
+        }
+        
+       
+        
         return esIgual;
     }
     
@@ -124,7 +154,7 @@ public class Server {
    
         
         llenarBingo();
-        System.out.println("El bingo se ha inicializado.....");
+        System.out.println("El bingo se ha inicializado...");
         try {
             conexion = new DatagramSocket(PUERTO);
             while(true){
@@ -149,20 +179,28 @@ public class Server {
                 
                 
               
-                if( (f + col) == 10){
-                   
-                                     mensaje= "Comparando resultados....";
-                                     dataSalida = mensaje.getBytes();
+                if( (f + col) == 8){
+                                    
                                      System.out.println("Stop to see results");
+                                     
+                                     if(compararBingos()){
+                                     mensaje= "Has sido el Ganador !!FELICITACIONES!!!!";
+                                     
+                                     }else{
+                                        mensaje= "Has perdido Suerte en la proxima ves";
+                                          }
+                                     
+                                     dataSalida = mensaje.getBytes();
                                      salida = new DatagramPacket(dataSalida, 
                                      dataSalida.length, 
                                      entrada.getAddress(), 
                                      entrada.getPort());
-                
+                                     conexion.send(salida); 
                 
                                    }
                                    else{   
                                             mensaje= "Comparando resultados....";
+                                            
                                             dataSalida = mensaje.getBytes();
                                             salida = new DatagramPacket(dataSalida, 
                                             dataSalida.length, 
